@@ -17,25 +17,22 @@ import Input from "../components/Input";
 import MainButton from "../components/MainButton";
 import NumberContainer from "../components/NumberContainer";
 import TitleText from "../components/TitleText";
+import { useOrientation } from "../components/useOrientation";
 import Colors from "../constants/colors";
 
 const StartGameScreen = (props) => {
 	const [enteredValue, setEnteredValue] = useState("");
 	const [selectedNumber, setSelectedNumber] = useState();
 	const [confirmed, setConfirmed] = useState(false);
-	const [buttonWidth, setButtonWidth] = useState(
-		Dimensions.get("window").width / 4
-	);
 
-	useEffect(() => {
-		const updateLayout = () => {
-			setButtonWidth(Dimensions.get("window").width / 4);
-		};
-		Dimensions.addEventListener("change", updateLayout);
-		return () => {
-			Dimensions.removeEventListener("change", updateLayout);
-		};
-	});
+	let buttonWidth = Dimensions.get("window").width / 4;
+	let orientation = useOrientation();
+
+	if (orientation === "PORTRAIT") {
+		buttonWidth = Dimensions.get("window").width / 4;
+	} else {
+		buttonWidth = Dimensions.get("window").width / 5;
+	}
 
 	const numberInputHandler = (inputText) => {
 		setEnteredValue(inputText.replace(/[^0-9]/g, ""));

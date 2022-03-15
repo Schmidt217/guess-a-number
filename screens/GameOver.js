@@ -11,36 +11,21 @@ import colors from "../constants/colors";
 import BodyText from "../components/BodyText";
 import TitleText from "../components/TitleText";
 import MainButton from "../components/MainButton";
+import { useOrientation } from "../components/useOrientation";
 
 const GameOver = (props) => {
-	const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
-		Dimensions.get("window").height
-	);
-	const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
-		Dimensions.get("window").width
-	);
-
-	useEffect(() => {
-		const updateLayout = () => {
-			setAvailableDeviceWidth(Dimensions.get("window").width);
-			setAvailableDeviceHeight(Dimensions.get("window").height);
-		};
-		Dimensions.addEventListener("change", updateLayout);
-		return () => {
-			Dimensions.removeEventListener("change", updateLayout);
-		};
-	});
-
+	const orientation = useOrientation();
 	return (
 		<ScrollView>
 			<View style={styles.screen}>
 				<TitleText>The Game is Over!</TitleText>
 				<View
-					style={
-						availableDeviceWidth > 500
-							? styles.imageContainerLandscape
-							: styles.imageContainer
-					}
+					style={{
+						...styles.imageContainer,
+						width: Dimensions.get("window").width * 0.5,
+						height: Dimensions.get("window").width * 0.5,
+						borderRadius: (Dimensions.get("window").width * 0.5) / 2,
+					}}
 				>
 					<Image
 						source={require("../assets/success.png")}
@@ -69,18 +54,15 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 	},
 	imageContainer: {
-		borderRadius: (Dimensions.get("window").width * 0.5) / 2,
 		borderWidth: 3,
 		borderColor: "black",
-		width: Dimensions.get("window").width * 0.5,
-		height: Dimensions.get("window").width * 0.5,
 		overflow: "hidden",
 		marginVertical: Dimensions.get("window").height / 30,
 	},
 	imageContainerLandscape: {
-		borderRadius: (Dimensions.get("window").width * 0.4) / 2,
-		width: Dimensions.get("window").width * 0.4,
-		height: Dimensions.get("window").width * 0.4,
+		borderRadius: (Dimensions.get("window").width * 0.5) / 2,
+		width: Dimensions.get("window").width * 0.5,
+		height: Dimensions.get("window").width * 0.5,
 		borderWidth: 3,
 		borderColor: "black",
 		overflow: "hidden",
